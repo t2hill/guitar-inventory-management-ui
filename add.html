@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <ul class="navbar">
+        <li><a href="search.html">Search</a></li>
+        <li><a href="add.html">Add</a></li>
+        <li><a href="about.html">About</a></li>
+        <li style="float:left"><a class="home" href="index.html">Guitar Inventory Management</a></li>
+    </ul>
+
+    <!-- USER INPUT BOXES -->
+    <ul class="userInput">
+        <li><label>Serial Number:</label>
+        <input id="serialNumber" /></li>
+        <li><label>Price:</label>
+        <input id="price" /></li>
+        <li><label>Builder:</label>
+        <input id="builder" /></li>
+        <li><label>Model:</label>
+        <input id="model" /></li>
+        <li><label>Type:</label>
+        <input id="type" /></li>
+        <li><label>Back wood:</label>
+        <input id="backWood" /></li>
+        <li><label>Top wood:</label>
+        <input id="topWood" /></li>
+        <li><button class="add" onclick="addTheGuitar()">Add the guitar</button></li>
+    </ul>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        let host = "http://localhost:8080";
+        async function addTheGuitar() {
+            // Get all the information we need
+            let message = "";
+            let gSerialNumber = document.getElementById("serialNumber").value;
+            let gPrice = document.getElementById("price").value;
+            let gBuilder = document.getElementById("builder").value;
+            let gModel = document.getElementById("model").value;
+            let gType = document.getElementById("type").value;
+            let gBackWood = document.getElementById("backWood").value.split(' ').join('_');
+            let gTopWood = document.getElementById("topWood").value.split(' ').join('_');
+            let guitar = {serialNumber: gSerialNumber, price: gPrice,
+                        builder: gBuilder.toUpperCase(), model: gModel, type: gType.toUpperCase(),
+                        backWood: gBackWood.toUpperCase(), topWood: gTopWood.toUpperCase()};
+            console.log("You entered: " + JSON.stringify(guitar));
+
+            // build request
+            let request = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(guitar)
+            };
+            let response = await fetch(host + "/inventory", request);
+            if (response.status == 200) {
+                let result = await response.json()
+                if (result){
+                    message = "You've successfully added \n\n" + JSON.stringify(guitar);
+                } else {
+                    message = "This item already exists in the database,\nOR this serial number is already being used."
+                }
+            } else {
+                console.log(response);
+                message = "Something went wrong! Guitar data could not be saved.";
+            }
+            alert(message);
+        }
+    </script>
+</body>
+</html>

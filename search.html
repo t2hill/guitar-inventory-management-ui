@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <ul class="navbar">
+        <li><a href="search.html">Search</a></li>
+        <li><a href="add.html">Add</a></li>
+        <li><a href="about.html">About</a></li>
+        <li style="float:left"><a class="home" href="index.html">Guitar Inventory Management</a></li>
+    </ul>
+
+    <!-- USER INPUT BOXES -->
+    <ul class="userInput">
+        <li><label>Builder:</label>
+        <input id="builder" /></li>
+        <li><label>Model:</label>
+        <input id="model" /></li>
+        <li><label>Type:</label>
+        <input id="type" /></li>
+        <li><label>Back wood:</label>
+        <input id="backWood" /></li>
+        <li><label>Top wood:</label>
+        <input id="topWood" /></li>
+        <li><button class="search" onclick="search()">Search</button></li>
+    </ul>
+
+    <!-- DISPLAY TABLE -->
+    <br />
+    <table>
+        <thead>
+            <tr>
+                <th>Serial Number</th>
+                <th>Builder</th>
+                <th>Model</th>
+                <th>Type</th>
+                <th>Back wood</th>
+                <th>Top wood</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="result">
+
+        </tbody>
+     
+    </table>
+
+    <script>
+        let guitars = [];
+
+        async function search() {
+            let host = "http://localhost:8080";
+            let gBuilder = document.getElementById("builder").value.toUpperCase();
+            let gModel = document.getElementById("model").value;
+            let gType = document.getElementById("type").value.toUpperCase();
+            let gBackWood = document.getElementById("backWood").value.toUpperCase().split(' ').join('_');
+            let gTopWood = document.getElementById("topWood").value.toUpperCase().split(' ').join('_');
+            
+            let request = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+            };
+            let url = host + "/inventory/search?builder=" + gBuilder + "&model=" + gModel + 
+            "&type=" + gType + "&backWood=" + gBackWood + "&topWood=" + gTopWood;
+            let response = await fetch(url, request);
+            let results = await response.json();
+            let table = document.getElementById("result");
+            table.innerHTML = "";
+
+            for (let res of results) {
+                // Create Elements
+                let row = document.createElement("tr");
+                let sn = document.createElement("td");
+                let b = document.createElement("td");
+                let m = document.createElement("td");
+                let t = document.createElement("td");
+                let bw = document.createElement("td");
+                let tw = document.createElement("td");
+                let p = document.createElement("td");
+
+                // Get Elements
+                let serialNumber = document.createTextNode(res.serialNumber);
+                let builder = document.createTextNode(res.builder);
+                let model = document.createTextNode(res.model);
+                let type = document.createTextNode(res.type);
+                let backWood = document.createTextNode(res.backWood);
+                let topWood = document.createTextNode(res.topWood);
+                let price = document.createTextNode(res.price);
+
+                // Append to correct children
+                sn.appendChild(serialNumber);
+                b.appendChild(builder);
+                m.appendChild(model)
+                t.appendChild(type);
+                bw.appendChild(backWood);
+                tw.appendChild(topWood);
+                p.appendChild(price);
+                row.appendChild(sn);
+                row.appendChild(b);
+                row.appendChild(m);
+                row.appendChild(t);
+                row.appendChild(bw);
+                row.appendChild(tw);
+                row.appendChild(p);
+                table.appendChild(row);
+            }
+        }
+
+    </script>
+</body>
+</html>
