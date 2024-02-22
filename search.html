@@ -69,49 +69,54 @@
             };
             let url = host + "/inventory/search?builder=" + gBuilder + "&model=" + gModel + 
             "&type=" + gType + "&backWood=" + gBackWood + "&topWood=" + gTopWood;
-            let response = await fetch(url, request);
-            let results = await response.json();
-            let table = document.getElementById("result");
-            table.innerHTML = "";
+            try {
+                let response = await fetch(url, request);
+                let results = await response.json();
+                let table = document.getElementById("result");
+                table.innerHTML = "";
 
-            for (let res of results) {
-                // Create Elements
-                let row = document.createElement("tr");
-                let sn = document.createElement("td");
-                let b = document.createElement("td");
-                let m = document.createElement("td");
-                let t = document.createElement("td");
-                let bw = document.createElement("td");
-                let tw = document.createElement("td");
-                let p = document.createElement("td");
+                for (let res of results) {
+                    // Create Elements
+                    let row = document.createElement("tr");
+                    let sn = document.createElement("td");
+                    let b = document.createElement("td");
+                    let m = document.createElement("td");
+                    let t = document.createElement("td");
+                    let bw = document.createElement("td");
+                    let tw = document.createElement("td");
+                    let p = document.createElement("td");
 
-                // Get Elements
-                let serialNumber = document.createTextNode(res.serialNumber);
-                let builder = document.createTextNode(res.builder);
-                let model = document.createTextNode(res.model);
-                let type = document.createTextNode(res.type);
-                let backWood = document.createTextNode(res.backWood);
-                let topWood = document.createTextNode(res.topWood);
-                let price = document.createTextNode(res.price);
+                    // Get Elements
+                    let serialNumber = document.createTextNode(res.serialNumber);
+                    let builder = document.createTextNode(res.builder);
+                    let model = document.createTextNode(res.model);
+                    let type = document.createTextNode(res.type);
+                    let backWood = document.createTextNode(res.backWood);
+                    let topWood = document.createTextNode(res.topWood);
+                    let price = document.createTextNode(res.price);
 
-                // Append to correct children
-                sn.appendChild(serialNumber);
-                b.appendChild(builder);
-                m.appendChild(model)
-                t.appendChild(type);
-                bw.appendChild(backWood);
-                tw.appendChild(topWood);
-                p.appendChild(price);
-                row.appendChild(sn);
-                row.appendChild(b);
-                row.appendChild(m);
-                row.appendChild(t);
-                row.appendChild(bw);
-                row.appendChild(tw);
-                row.appendChild(p);
-                table.appendChild(row);
+                    // Append to correct children
+                    sn.appendChild(serialNumber);
+                    b.appendChild(builder);
+                    m.appendChild(model)
+                    t.appendChild(type);
+                    bw.appendChild(backWood);
+                    tw.appendChild(topWood);
+                    p.appendChild(price);
+                    row.appendChild(sn);
+                    row.appendChild(b);
+                    row.appendChild(m);
+                    row.appendChild(t);
+                    row.appendChild(bw);
+                    row.appendChild(tw);
+                    row.appendChild(p);
+                    table.appendChild(row);
+                }
+            } catch (error) {
+                let message = "The following error occurred:\n" + error + "\n\nPlease try again or contact the customer support team";
+                alert(message);
             }
-        }
+        }  
 
     </script>
 </body>

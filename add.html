@@ -38,8 +38,9 @@
     <script>
         let host = "http://localhost:8080";
         async function addTheGuitar() {
-            // Get all the information we need
+
             let message = "";
+            // Get all the information we need
             let gSerialNumber = document.getElementById("serialNumber").value;
             let gPrice = document.getElementById("price").value;
             let gBuilder = document.getElementById("builder").value;
@@ -50,6 +51,41 @@
             let guitar = {serialNumber: gSerialNumber, price: gPrice,
                         builder: gBuilder.toUpperCase(), model: gModel, type: gType.toUpperCase(),
                         backWood: gBackWood.toUpperCase(), topWood: gTopWood.toUpperCase()};
+            
+            // make sure every field has a value
+            if (gSerialNumber == "") { 
+                alert("The SERIAL NUMBER field is empty!"); 
+                return;
+            }
+            if (gPrice == "") { 
+                alert("The PRICE field is empty!"); 
+                return;
+            }
+            if (gBuilder == "") { 
+                alert("The BUILDER field is empty!"); 
+                return;
+            }
+            if (gModel == "") { 
+                alert("The MODEL field is empty!"); 
+                return;
+            }
+            if (gType == "") { 
+                alert("The TYPE field is empty!"); 
+                return;
+            }
+            if (gBackWood == "") { 
+                alert("The BACK WOOD field is empty!"); 
+                return;
+            }
+            if (gTopWood == "") { 
+                alert("The TOP WOOD field is empty!"); 
+                return;
+            }
+
+
+
+
+                
             console.log("You entered: " + JSON.stringify(guitar));
 
             // build request
@@ -60,17 +96,21 @@
                 },
                 body: JSON.stringify(guitar)
             };
+            try {
             let response = await fetch(host + "/inventory", request);
             if (response.status == 200) {
                 let result = await response.json()
                 if (result){
-                    message = "You've successfully added \n\n" + JSON.stringify(guitar);
+                    message = "The guitar was added to the system \n\n" + JSON.stringify(guitar);
                 } else {
-                    message = "This item already exists in the database,\nOR this serial number is already being used."
+                    message = "Something went wrong. Please try again or contact the customer support team."
                 }
             } else {
                 console.log(response);
-                message = "Something went wrong! Guitar data could not be saved.";
+                message = "Something went wrong. Please try again or contact the customer support team.";
+            }
+            } catch (error) {
+                message = "Something went wrong. Please try again or contact the customer support team.";
             }
             alert(message);
         }
