@@ -54,7 +54,9 @@
         let guitars = [];
 
         async function search() {
-            let host = "https://guitar-inventory-management-t2hill.onrender.com";
+            // let host = "https://guitar-inventory-management-t2hill.onrender.com";
+            let host = "http://localhost:8080";
+
             let gBuilder = document.getElementById("builder").value.toUpperCase();
             let gModel = document.getElementById("model").value;
             let gType = document.getElementById("type").value.toUpperCase();
@@ -69,11 +71,9 @@
             };
             let url = host + "/inventory/search?builder=" + gBuilder + "&model=" + gModel + 
             "&type=" + gType + "&backWood=" + gBackWood + "&topWood=" + gTopWood;
-            console.log(url);
             try {
                 let response = await fetch(url, request);
                 let results = await response.json();
-                alert("MESSAGE");
                 let table = document.getElementById("result");
                 table.innerHTML = "";
 
