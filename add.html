@@ -36,8 +36,9 @@
 
     <!-- JAVASCRIPT -->
     <script>
-        let host = "https://guitar-inventory-management-t2hill.onrender.com";
         async function addTheGuitar() {
+            // let host = "https://guitar-inventory-management-t2hill.onrender.com";
+            let host = "http://localhost:8080";
 
             let message = "";
             // Get all the information we need
@@ -82,10 +83,6 @@
                 return;
             }
 
-
-
-
-                
             console.log("You entered: " + JSON.stringify(guitar));
 
             // build request
@@ -100,7 +97,7 @@
             let response = await fetch(host + "/inventory", request);
             if (response.status == 200) {
                 let result = await response.json()
-                if (result){
+                if (result) {
                     message = "The guitar was added to the system \n\n" + JSON.stringify(guitar);
                 } else {
                     message = "Something went wrong. Please try again or contact the customer support team."
