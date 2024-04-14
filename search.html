@@ -12,6 +12,7 @@
         <li><a href="search.html">Search</a></li>
         <li><a href="add.html">Add</a></li>
         <li><a href="about.html">About</a></li>
+        <li><a href="login.html">Login</a></li>
         <li style="float:left"><a class="home" href="index.html">Guitar Inventory Management</a></li>
     </ul>
 
@@ -50,12 +51,12 @@
      
     </table>
 
+    <script src="configuration.js"></script>
     <script>
         let guitars = [];
 
         async function search() {
-            let host = "https://guitar-inventory-management-t2hill.onrender.com";
-            // let host = "http://localhost:8080";
+            let host = getHost();
 
             let gBuilder = document.getElementById("builder").value.toUpperCase();
             let gModel = document.getElementById("model").value;
